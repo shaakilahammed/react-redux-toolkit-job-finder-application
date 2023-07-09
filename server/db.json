@@ -41,6 +41,13 @@
       "salary": "18000",
       "deadline": "2023-12-31",
       "id": 7
+    },
+    {
+      "title": "Software Engineer",
+      "type": "Remote",
+      "salary": "50000",
+      "deadline": "2023-07-31",
+      "id": 8
     }
   ]
 }
