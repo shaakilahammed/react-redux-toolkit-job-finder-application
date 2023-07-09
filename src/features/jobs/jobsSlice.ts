@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { addJob, deleteJob, editJob, getJobs } from './jobsAPI';
 import { JobsState } from '../../types/Job';
 import Job from '../../types/Job';
+// import { AppDispatch, RootState } from '../../app/store';
 
 const initialState: JobsState = {
   isLoading: false,
@@ -10,12 +11,12 @@ const initialState: JobsState = {
   error: '',
 };
 
-const fetchJobs = createAsyncThunk('jobs/fetch', async (): Promise<Job[]> => {
+export const fetchJobs = createAsyncThunk('jobs/fetch', async () => {
   const jobs = await getJobs();
   return jobs;
 });
 
-const createJob = createAsyncThunk(
+export const createJob = createAsyncThunk(
   'jobs/create',
   async (data: Job): Promise<Job> => {
     const job = await addJob(data);
@@ -23,7 +24,7 @@ const createJob = createAsyncThunk(
   }
 );
 
-const changeJob = createAsyncThunk(
+export const changeJob = createAsyncThunk(
   'jobs/change',
   async ({ id, data }: { id: number; data: Job }): Promise<Job> => {
     const job = await editJob(id, data);
@@ -31,7 +32,7 @@ const changeJob = createAsyncThunk(
   }
 );
 
-const removeJob = createAsyncThunk(
+export const removeJob = createAsyncThunk(
   'jobs/remove',
   async (id: number): Promise<void> => {
     await deleteJob(id);
