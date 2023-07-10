@@ -49,7 +49,7 @@ export const changeJob = createAsyncThunk(
 
 export const removeJob = createAsyncThunk(
   'jobs/remove',
-  async (id: number): Promise<void> => {
+  async (id: number | string): Promise<void> => {
     await deleteJob(id);
   }
 );

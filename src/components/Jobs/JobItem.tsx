@@ -2,13 +2,19 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Job from '../../types/Job';
 import numberWithCommas from '../../utils/numberWithCommas';
+import { useAppDispatch } from '../../app/hooks';
+import { removeJob } from '../../features/jobs/jobsSlice';
 
 type JobItemProps = {
   job: Job;
 };
 
 const JobItem: React.FC<JobItemProps> = ({ job }) => {
+  const dispatch = useAppDispatch();
   const { id, title, type, salary, deadline } = job;
+  const deleteHandler = () => {
+    dispatch(removeJob(id ?? '')).catch((err) => console.log(err));
+  };
   return (
     <div className="lws-single-job">
       <div className="flex-1 min-w-0">
@@ -48,7 +54,11 @@ const JobItem: React.FC<JobItemProps> = ({ job }) => {
         </span>
 
         <span className="sm:ml-3">
-          <button type="button" className="lws-delete btn btn-danger ">
+          <button
+            type="button"
+            className="lws-delete btn btn-danger "
+            onClick={deleteHandler}
+          >
             <i className="fa-solid fa-trash text-gray-300 -ml-1 mr-2"></i>
             Delete
           </button>

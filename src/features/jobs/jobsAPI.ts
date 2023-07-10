@@ -22,6 +22,6 @@ export const editJob = async (id: number | string, data: Job): Promise<Job> => {
   return response.data;
 };
 
-export const deleteJob = async (id: number): Promise<void> => {
+export const deleteJob = async (id: number | string): Promise<void> => {
   await axios.delete(`/jobs/${id}`);
 };
