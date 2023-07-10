@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { addJob, deleteJob, editJob, getJobs } from './jobsAPI';
+import { addJob, deleteJob, editJob, getJobById, getJobs } from './jobsAPI';
 import { JobsState } from '../../types/Job';
 import Job from '../../types/Job';
 // import { AppDispatch, RootState } from '../../app/store';
@@ -9,12 +9,27 @@ const initialState: JobsState = {
   jobs: [],
   isError: false,
   error: '',
+  editing: {
+    title: '',
+    type: '',
+    salary: '',
+    deadline: '',
+    id: '',
+  },
 };
 
 export const fetchJobs = createAsyncThunk('jobs/fetch', async () => {
   const jobs = await getJobs();
   return jobs;
 });
+
+export const fetchJobById = createAsyncThunk(
+  'jobs/fetchJobById',
+  async (id: string | number) => {
+    const job = await getJobById(id);
+    return job;
+  }
+);
 
 export const createJob = createAsyncThunk(
   'jobs/create',
@@ -26,7 +41,7 @@ export const createJob = createAsyncThunk(
 
 export const changeJob = createAsyncThunk(
   'jobs/change',
-  async ({ id, data }: { id: number; data: Job }): Promise<Job> => {
+  async ({ id, data }: { id: number | string; data: Job }): Promise<Job> => {
     const job = await editJob(id, data);
     return job;
   }
@@ -57,6 +72,27 @@ const jobsSlice = createSlice({
         state.isLoading = false;
         state.jobs = [];
         state.isError = true;
+        state.error = action.error?.message;
+      });
+    builder
+      .addCase(fetchJobById.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(fetchJobById.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.editing = action.payload;
+      })
+      .addCase(fetchJobById.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.editing = {
+          title: '',
+          type: '',
+          salary: '',
+          deadline: '',
+          id: '',
+        };
         state.error = action.error?.message;
       });
     builder

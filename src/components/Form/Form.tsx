@@ -1,6 +1,11 @@
-import React, { useState } from 'react';
-import { useAppDispatch } from '../../app/hooks';
-import { createJob } from '../../features/jobs/jobsSlice';
+import React, { useState, useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import {
+  changeJob,
+  createJob,
+  fetchJobById,
+} from '../../features/jobs/jobsSlice';
+import { useNavigate, useParams } from 'react-router-dom';
 
 type FormProps = {
   editing?: boolean;
@@ -8,12 +13,30 @@ type FormProps = {
 
 const Form: React.FC<FormProps> = ({ editing = false }) => {
   const dispatch = useAppDispatch();
+  const { editing: editingJob, isLoading } = useAppSelector(
+    (state) => state.jobs
+  );
+  const { id, title, type, salary, deadline } = editingJob;
+  const { jobId } = useParams();
+  const navigate = useNavigate();
   const [input, setInput] = useState({
     title: '',
     type: '',
     salary: '',
     deadline: '',
   });
+
+  useEffect(() => {
+    if (editing && jobId) {
+      dispatch(fetchJobById(jobId)).catch((error) => console.log(error));
+      setInput({
+        title,
+        type,
+        salary,
+        deadline,
+      });
+    }
+  }, [editing, title, type, salary, deadline, jobId, dispatch]);
 
   const inputHandler = (value: string, fieldName: string) => {
     setInput({ ...input, [fieldName]: value });
@@ -33,13 +56,18 @@ const Form: React.FC<FormProps> = ({ editing = false }) => {
     dispatch(createJob(input)).catch((error) => console.log(error));
     resetForm();
   };
-  const editHandler = (e: React.FormEvent<HTMLElement>) => {
+  const updateHandler = (e: React.FormEvent<HTMLElement>) => {
     e.preventDefault();
+    dispatch(changeJob({ id: id ?? '', data: input })).catch((err) =>
+      console.log(err)
+    );
+    resetForm();
+    navigate('/');
   };
   return (
     <form
       className="space-y-6"
-      onSubmit={editing ? editHandler : createHandler}
+      onSubmit={editing ? updateHandler : createHandler}
     >
       <div className="fieldContainer">
         <label
@@ -62,7 +90,7 @@ const Form: React.FC<FormProps> = ({ editing = false }) => {
           <option value="Software Developer">Software Developer</option>
           <option value="Full Stack Developer">Full Stack Developer</option>
           <option value="MERN Stack Developer">MERN Stack Developer</option>
-          <option value="DevOps Engineer<">DevOps Engineer</option>
+          <option value="DevOps Engineer">DevOps Engineer</option>
           <option value="QA Engineer">QA Engineer</option>
           <option value="Product Manager">Product Manager</option>
           <option value="Social Media Manager">Social Media Manager</option>
@@ -127,6 +155,7 @@ const Form: React.FC<FormProps> = ({ editing = false }) => {
           type="submit"
           id="lws-submit"
           className="cursor-pointer btn btn-primary w-fit"
+          disabled={isLoading}
         >
           {editing ? 'Update' : 'Submit'}
           {/* {editing} */}

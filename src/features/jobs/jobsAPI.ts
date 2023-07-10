@@ -7,12 +7,17 @@ export const getJobs = async (): Promise<Job[]> => {
   return response.data;
 };
 
+export const getJobById = async (id: number | string): Promise<Job> => {
+  const response: AxiosResponse<Job> = await axios.get(`/jobs/${id}`);
+  return response.data;
+};
+
 export const addJob = async (data: Job): Promise<Job> => {
   const response: AxiosResponse<Job> = await axios.post('/jobs', data);
   return response.data;
 };
 
-export const editJob = async (id: number, data: Job): Promise<Job> => {
+export const editJob = async (id: number | string, data: Job): Promise<Job> => {
   const response: AxiosResponse<Job> = await axios.put(`/jobs/${id}`, data);
   return response.data;
 };

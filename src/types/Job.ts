@@ -3,7 +3,7 @@ type Job = {
   type: string;
   salary: string;
   deadline: string;
-  id?: number;
+  id?: number | string;
 };
 
 export type JobsState = {
@@ -11,5 +11,6 @@ export type JobsState = {
   jobs: Job[];
   isError: boolean;
   error?: string;
+  editing: Job;
 };
 export default Job;

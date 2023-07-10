@@ -39,7 +39,7 @@ const JobItem: React.FC<JobItemProps> = ({ job }) => {
       </div>
       <div className="mt-5 flex lg:mt-0 lg:ml-4">
         <span className="hidden sm:block">
-          <Link to={`jobs/edit/${id}`}>
+          <Link to={`jobs/edit/${id ?? ''}`}>
             <button type="button" className="lws-edit btn btn-primary">
               <i className="fa-solid fa-pen text-gray-300 -ml-1 mr-2"></i>
               Edit
