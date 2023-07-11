@@ -24,7 +24,7 @@
     {
       "title": "Social Media Manager",
       "type": "Internship",
-      "salary": "20000",
+      "salary": "2000",
       "deadline": "2023-11-30",
       "id": 5
     },
@@ -48,6 +48,13 @@
       "salary": "50000",
       "deadline": "2023-07-31",
       "id": 8
+    },
+    {
+      "title": "Software Developer",
+      "type": "Internship",
+      "salary": "10000",
+      "deadline": "2023-07-26",
+      "id": 9
     }
   ]
 }

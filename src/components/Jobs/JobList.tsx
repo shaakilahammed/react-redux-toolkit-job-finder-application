@@ -21,18 +21,36 @@ const JobList: React.FC = () => {
   const { isLoading, jobs, isError, error } = useAppSelector(
     (state: RootState) => state.jobs
   );
+  const { search, sort } = useAppSelector((state: RootState) => state.filters);
+  let filteredJobs;
+  if (search) {
+    filteredJobs = jobs.filter((item) =>
+      item.title.toLowerCase().includes(search.toLowerCase())
+    );
+  } else {
+    filteredJobs = [...jobs];
+  }
+
+  if (sort === 'lth') {
+    filteredJobs.sort((a, b) => (+a.salary < +b.salary ? -1 : 1));
+  } else if (sort === 'htl') {
+    filteredJobs.sort((a, b) => (+a.salary < +b.salary ? 1 : -1));
+  }
 
   useEffect(() => {
     dispatch(fetchJobs(typeSet)).catch((error) => console.log(error));
   }, [dispatch, typeSet]);
 
+  // let jobs;
   let content;
   if (isLoading) content = <p>Loading.....</p>;
   if (!isLoading && isError) content = <p>{error}</p>;
-  if (!isLoading && !isError && jobs.length === 0)
+  // if(!isLoading && !isError && search)
+
+  if (!isLoading && !isError && filteredJobs.length === 0)
     content = <p>No jobs found....</p>;
-  if (!isLoading && !isError && jobs.length > 0)
-    content = jobs.map((item) => <JobItem job={item} key={item.id} />);
+  if (!isLoading && !isError && filteredJobs.length > 0)
+    content = filteredJobs.map((item) => <JobItem job={item} key={item.id} />);
   return <div className="jobs-list">{content}</div>;
 };
 
