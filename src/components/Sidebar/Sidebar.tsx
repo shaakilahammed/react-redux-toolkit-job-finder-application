@@ -17,7 +17,7 @@ const Sidebar: React.FC = () => {
               <li>
                 <Link
                   className="sub-menu"
-                  to="/jobs/internship"
+                  to="/home/internship"
                   id="lws-internship-menu"
                 >
                   <i className="fa-solid fa-stop !text-[#FF5757]"></i>
@@ -27,7 +27,7 @@ const Sidebar: React.FC = () => {
               <li>
                 <Link
                   className="sub-menu"
-                  to="/jobs/fulltime"
+                  to="/home/fulltime"
                   id="lws-fulltime-menu"
                 >
                   <i className="fa-solid fa-stop !text-[#FF8A00]"></i>
@@ -37,7 +37,7 @@ const Sidebar: React.FC = () => {
               <li>
                 <Link
                   className="sub-menu"
-                  to="/jobs/remote"
+                  to="/home/remote"
                   id="lws-remote-menu"
                 >
                   <i className="fa-solid fa-stop !text-[#56E5C4]"></i>
