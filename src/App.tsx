@@ -10,9 +10,6 @@ function App() {
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/home/:type" element={<Home />} />
-          <Route path="/home/:type" element={<Home />} />
-          <Route path="/home/:type" element={<Home />} />
           <Route path="/jobs/add" element={<AddJobs />} />
           <Route path="/jobs/edit/:jobId" element={<EditJobs />} />
         </Routes>

@@ -5,47 +5,42 @@ import { fetchJobs } from '../../features/jobs/jobsSlice';
 
 import { RootState } from '../../app/store';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { useParams } from 'react-router-dom';
 
 const JobList: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { type } = useParams();
-  const typeSet =
-    type === 'internship'
-      ? 'Internship'
-      : type === 'fulltime'
-      ? 'Full Time'
-      : type === 'remote'
-      ? 'Remote'
-      : '';
+
   const { isLoading, jobs, isError, error } = useAppSelector(
     (state: RootState) => state.jobs
   );
-  const { search, sort } = useAppSelector((state: RootState) => state.filters);
-  let filteredJobs;
+
+  const { type, search, sort } = useAppSelector(
+    (state: RootState) => state.filters
+  );
+  let filteredJobs = [...jobs];
+
+  if (type) {
+    filteredJobs = jobs.filter((item) => item.type === type);
+  }
+
   if (search) {
-    filteredJobs = jobs.filter((item) =>
+    filteredJobs = filteredJobs.filter((item) =>
       item.title.toLowerCase().includes(search.toLowerCase())
     );
-  } else {
-    filteredJobs = [...jobs];
   }
 
   if (sort === 'lth') {
-    filteredJobs.sort((a, b) => (+a.salary < +b.salary ? -1 : 1));
+    filteredJobs.sort((a, b) => (+a.salary > +b.salary ? 1 : -1));
   } else if (sort === 'htl') {
     filteredJobs.sort((a, b) => (+a.salary < +b.salary ? 1 : -1));
   }
 
   useEffect(() => {
-    dispatch(fetchJobs(typeSet)).catch((error) => console.log(error));
-  }, [dispatch, typeSet]);
+    dispatch(fetchJobs()).catch((error) => console.log(error));
+  }, [dispatch]);
 
-  // let jobs;
   let content;
   if (isLoading) content = <p>Loading.....</p>;
   if (!isLoading && isError) content = <p>{error}</p>;
-  // if(!isLoading && !isError && search)
 
   if (!isLoading && !isError && filteredJobs.length === 0)
     content = <p>No jobs found....</p>;

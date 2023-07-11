@@ -18,13 +18,10 @@ const initialState: JobsState = {
   },
 };
 
-export const fetchJobs = createAsyncThunk(
-  'jobs/fetch',
-  async (type: string) => {
-    const jobs = await getJobs(type);
-    return jobs;
-  }
-);
+export const fetchJobs = createAsyncThunk('jobs/fetch', async () => {
+  const jobs = await getJobs();
+  return jobs;
+});
 
 export const fetchJobById = createAsyncThunk(
   'jobs/fetchJobById',

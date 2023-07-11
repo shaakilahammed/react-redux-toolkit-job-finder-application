@@ -2,11 +2,8 @@ import { AxiosResponse } from 'axios';
 import axios from '../../utils/axios';
 import Job from '../../types/Job';
 
-export const getJobs = async (type: string): Promise<Job[]> => {
-  const filterString = type ? `type=${type}` : '';
-  const response: AxiosResponse<Job[]> = await axios.get(
-    `/jobs?${filterString}`
-  );
+export const getJobs = async (): Promise<Job[]> => {
+  const response: AxiosResponse<Job[]> = await axios.get(`/jobs`);
   return response.data;
 };
 
